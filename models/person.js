@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
-//const url = 'mongodb://stackuser:sanat0n@ds161112.mlab.com:61112/fullstack-kurssi'
+if ( process.env.NODE_ENV !== 'production' ) {
+  require('dotenv').config()
 const url = process.env.MONGODB_URI
-
 mongoose.connect(url, { useNewUrlParser: true })
 
 
