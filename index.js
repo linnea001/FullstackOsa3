@@ -81,7 +81,7 @@ app.post('/api/persons', (request, response) => {
   .find({name: body.name})
   .then(foundPerson => {
     if (foundPerson.length > 0) {
-       return response.status(404).end()
+       return response.status(400).end()
     } 
   })
   .catch(error => {
