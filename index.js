@@ -3,7 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
-const mongoose = require('mongoose')
+
 const Person = require('./models/person')
 
 app.use(bodyParser.json())
@@ -19,10 +19,10 @@ app.use(express.static('build'))
 
 
 
- app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response) => {
   Person
     .find({})
-    .then(persons=> {
+    .then(persons => {
       response.json(persons.map(Person.formatPerson))
     })
     .catch(error => {
@@ -38,7 +38,7 @@ app.get('/api/persons/:id', (request, response) => {
       if (person) {
         response.json(Person.formatPerson(person))
       } else {
-        reponse.status(404).end()
+        response.status(404).end()
       }
     })
     .catch(error => {
@@ -52,9 +52,9 @@ app.get('/api/persons/:id', (request, response) => {
 app.get('/info', (request, response) => {
   Person
     .find({})
-    .then(persons=> {
-      date = new Date()
-      total = persons.length
+    .then(persons => {
+      const date = new Date()
+      const total = persons.length
 
       const text = '<p>Luettelossa '+ total + ' henkilöä</p> ' + date
       response.send(text)
@@ -67,8 +67,8 @@ app.get('/info', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
- if (body.name.length === 0 || body.number.length === 0) {
-    return response.status(400).json({error: 'nimi ja/tai numero puuttuu'})
+  if (body.name.length === 0 || body.number.length === 0) {
+    return response.status(400).json({ error: 'nimi ja/tai numero puuttuu' })
   }
 
   const person = new Person({
@@ -78,15 +78,15 @@ app.post('/api/persons', (request, response) => {
 
 
   Person
-  .find({name: body.name})
-  .then(foundPerson => {
-    if (foundPerson.length > 0) {
-       return response.status(400).end()
-    } 
-  })
-  .catch(error => {
-    console.log('virhe', error)
-  })
+    .find({ name: body.name })
+    .then(foundPerson => {
+      if (foundPerson.length > 0) {
+        return response.status(400).end()
+      }
+    })
+    .catch(error => {
+      console.log('virhe', error)
+    })
 
   person
     .save()
@@ -99,14 +99,14 @@ app.post('/api/persons', (request, response) => {
     .catch(error => {
       console.log('virhe', error)
     })
-}) 
+})
 
 
 app.put('/api/persons/:id', (request, response) => {
   const body = request.body
   //if (body.number.length === 0) {
   //  return response.status(400).json({error: 'numero puuttuu'})
- // }
+  // }
 
   const person = {
     name: body.name,
@@ -128,13 +128,13 @@ app.put('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   Person
-  .findByIdAndRemove(request.params.id)
-  .then(result => {
-    response.status(204).end()
-  })
-  .catch(error => {
-    response.status(400).send({ error: 'malformatted id' })
-  })
+    .findByIdAndRemove(request.params.id)
+    .then( () => {
+      response.status(204).end()
+    })
+    .catch( () => {
+      response.status(400).send({ error: 'malformatted id' })
+    })
 })
 
 

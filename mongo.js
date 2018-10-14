@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 // ilman salasanaa
 const url = 'mongodb://stackuser:<salasana>@ds161112.mlab.com:61112/fullstack-kurssi'
 
-mongoose.connect(url, {useNewUrlParser:true })
+mongoose.connect(url, { useNewUrlParser:true })
 
 const Person = mongoose.model('Person', {
   name: String,
@@ -13,27 +13,27 @@ const Person = mongoose.model('Person', {
 
 
 if (process.argv.length <= 2 || process.argv.length >=5) {
-    Person
+  Person
     .find({})
     .then(result => {
-        console.log('puhelinluettelo')
-        result.forEach(person => {
-        console.log(person.name, ' ', person.number,)
-        })
-        mongoose.connection.close()
+      console.log('puhelinluettelo')
+      result.forEach(person => {
+        console.log(person.name, ' ', person.number)
+      })
+      mongoose.connection.close()
     })
 }
 else {
-    const person = new Person({
+  const person = new Person({
     name: process.argv[2],
     number: process.argv[3],
     id: Math.round(Math.random()*1000)
-    })
+  })
 
-    person
+  person
     .save()
-    .then(response => {
-        console.log('lisätty henkilö ', person.name, ' numero ', person.number, ' luetteloon')
-        mongoose.connection.close()
+    .then( () => {
+      console.log('lisätty henkilö ', person.name, ' numero ', person.number, ' luetteloon')
+      mongoose.connection.close()
     })
 }

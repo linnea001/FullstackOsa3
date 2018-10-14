@@ -9,11 +9,11 @@ mongoose.connect(url, { useNewUrlParser: true })
 
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
-    id: Number
-  })
-  
+  name: String,
+  number: String,
+  id: Number
+})
+
 
 /*
 const Person = mongoose.model('Person', {
@@ -24,14 +24,13 @@ const Person = mongoose.model('Person', {
 
 */
 personSchema.statics.formatPerson = function(person) {
-    return {
-        name: person.name,
-        number: person.number,
-        id: person._id
-      }
+  return {
+    name: person.name,
+    number: person.number,
+    id: person._id
+  }
 }
-    
 
-const Person = mongoose.model('Person', personSchema)
-module.exports = mongoose.model('Person', personSchema)
+//const Person = mongoose.model('Person', personSchema)
 //module.exports = Person
+module.exports = mongoose.model('Person', personSchema)
